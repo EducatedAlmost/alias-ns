@@ -1,0 +1,1 @@
+{:lint-as {ae.alias+ns/alias+ns clojure.core/alias}}
