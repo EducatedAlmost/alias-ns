@@ -29,20 +29,38 @@ I like to namespace my keys, and I like to use aliases too.
 
 * Usage
 
-#+begin_src clojure
-(alias+ns 'foo 'ae.concise.brevity.foo)
+The order of arguments is ~[alias namespace]~, following the example of ~clojure.core/alias~. ~aliases+ns~ takes a map of alias–namespace pairs.
 
+#+begin_src clojure
+(require '[ae.alias-ns :as ns])
+
+;; Define a single alias
+(ns/alias+ns 'foo 'ae.concise.brevity.foo)
 {::foo/baz :qux}
+;; ==> {:ae.concise.brevity.foo/baz :qux}
+
+;; Define multiple aliases at once
+(ns/aliases+ns {'a 'ae.concise.brevity.a
+                'b 'ae.concise.brevity.b
+                'c 'ae.concise.brevity.c})
+{::a/qux true
+ ::b/qux false
+ ::c/qux nil}
+;; ==> {:ae.concise.brevity.a/qux true
+;;      :ae.concise.brevity.b/qux false
+;;      :ae.concise.brevity.c/qux nil}
 #+end_src
 
 ** ~clj-kondo~
 
-~clj-kondo~ thankfully warns one when one uses an alias that doesn't exist. Unfortunately it is unwelcome when that alias has actually been created by ~alias+ns~.
-
-One can instruct ~clj-kondo~ to treat ~alias+ns~ as it does ~alias~ by adding it to its configuration:
+~clj-kondo~ thankfully warns one when one uses an alias that doesn't exist. Unfortunately it is unwelcome when that alias has actually been created by ~alias+ns~. One can instruct ~clj-kondo~ to treat ~alias+ns~ as it does ~alias~ by adding it to its configuration:
 
 #+begin_src clojure
 {:lint-as {ae.alias+ns/alias+ns clojure.core/alias}}
 #+end_src
 
 For more information on ~clj-kondo~ and its configuration, see its [[https://github.com/clj-kondo/clj-kondo/blob/master/doc/config.md][documentation]].
+
+* Is this an antipattern?
+
+Probably maybe. I have written this, and only used it, in writing wrappers for libraries written in other languages which generally have more complicated structures and hierarchies than one would expect in Clojure. Instead of devising a novel naming system, I would rather use one that closely mirrors the original library to reduce the cognitive load of remembering two systems, and to allow consumers of my library to use the original library's documentation as a reference.
