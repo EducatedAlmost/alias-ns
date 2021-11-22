@@ -5,6 +5,6 @@
      (clojure.core/create-ns ~ns)
      (clojure.core/alias ~a ~ns)))
 
-(defn aliases+ns [m]
-  (doseq [[a ns] m]
-    (alias+ns a ns)))
+(defmacro aliases+ns [m]
+  `(do ~@(for [[a ns] m]
+           `(alias+ns ~a ~ns))))
