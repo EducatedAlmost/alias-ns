@@ -1,4 +1,4 @@
-* æ/alias-ns
+* æ/alias+ns
 
 I like to namespace my keys, and I like to use aliases too. Some of these namespaces don't have files associated with them, but this get tiresome and looks ugly.
 
