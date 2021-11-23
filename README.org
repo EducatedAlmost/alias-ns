@@ -1,6 +1,6 @@
-#+TITLE: Readme
+* æ/alias-ns
 
-I like to namespace my keys, and I like to use aliases too.
+I like to namespace my keys, and I like to use aliases too. Some of these namespaces don't have files associated with them, but this get tiresome and looks ugly.
 
 #+begin_src clojure
 (create-ns 'ae.concise.brevity.foo)
@@ -27,12 +27,30 @@ I like to namespace my keys, and I like to use aliases too.
  ::foo/connection ::qux/client}
 #+end_src
 
-* Usage
+And ~aliases+ns~ combines all that into a single sexp.
+
+#+begin_src clojure
+(aliases+ns {'foo 'ae.concise.brevity.foo
+             'bar 'ae.concise.brevity.bar
+             'qux 'ae.concise.brevity.qux})
+
+{::foo/options ::bar/default
+ ::foo/connection ::qux/client}
+#+end_src
+
+** Usage
+
+Add the library to your ~deps.edn~:
+
+#+begin_src clojure
+{:deps {ae/alias+ns {:git/url "https://github.com/EducatedAlmost/alias-ns"
+                     :git/sha "..."}}}
+#+end_src
 
 The order of arguments is ~[alias namespace]~, following the example of ~clojure.core/alias~. ~aliases+ns~ takes a map of alias–namespace pairs.
 
 #+begin_src clojure
-(require '[ae.alias-ns :as ns])
+(require '[ae.alias+ns :as ns])
 
 ;; Define a single alias
 (ns/alias+ns 'foo 'ae.concise.brevity.foo)
@@ -51,7 +69,7 @@ The order of arguments is ~[alias namespace]~, following the example of ~clojure
 ;;      :ae.concise.brevity.c/qux nil}
 #+end_src
 
-** ~clj-kondo~
+*** ~clj-kondo~
 
 ~clj-kondo~ thankfully warns one when one uses an alias that doesn't exist. Unfortunately it is unwelcome when that alias has actually been created by ~alias+ns~. One can instruct ~clj-kondo~ to treat ~alias+ns~ as it does ~alias~ by adding it to its configuration:
 
@@ -59,8 +77,14 @@ The order of arguments is ~[alias namespace]~, following the example of ~clojure
 {:lint-as {ae.alias+ns/alias+ns clojure.core/alias}}
 #+end_src
 
+If using ~aliases+ns~ this won't work and one can either use ~(macroexpand-1 '(aliases+ns {...}))~ to expand into multiple calls to ~alias+ns~, or disable the linter entirely:
+
+#+begin_src clojure
+{:linters {:unresolved-namespace {:level :off}}
+#+end_src
+
 For more information on ~clj-kondo~ and its configuration, see its [[https://github.com/clj-kondo/clj-kondo/blob/master/doc/config.md][documentation]].
 
-* Is this an antipattern?
+** Is this an antipattern?
 
 Probably maybe. I have written this, and only used it, in writing wrappers for libraries written in other languages which generally have more complicated structures and hierarchies than one would expect in Clojure. Instead of devising a novel naming system, I would rather use one that closely mirrors the original library to reduce the cognitive load of remembering two systems, and to allow consumers of my library to use the original library's documentation as a reference.
