@@ -1,6 +1,6 @@
 * æ/alias+ns
 
-*NB*: this feature is included in core Clojure as of 1.11.0-alpha2, see [[https://clojure.atlassian.net/browse/CLJ-2123][CLJ-2123]] and ~:as-alias~.
+*NB*: this feature is included in core Clojure as of 1.11.0-alpha2, see [[https://clojure.atlassian.net/browse/CLJ-2123][CLJ-2123]] and [[https://clojure.github.io/clojure/branch-master/clojure.core-api.html#clojure.core/require][require's]] ~:as-alias~.
 
 I like to namespace my keys, and I like to use aliases too. Some of these namespaces don't have files associated with them, but this get tiresome and looks ugly.
 
